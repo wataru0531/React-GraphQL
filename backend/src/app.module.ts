@@ -17,6 +17,7 @@ import { TaskModule } from './task/task.module';
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver, // Apolloサーバーを起動
       playground: true, // GraphQL Playgroundが開く
+                        // → http://localhost:3000/graphql で操作する
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'), // GraphQLのエンドポイント
       // → NestJSがGraphQLのスキーマを自動生成して、src/schema.gql に保存する
       // process.cwd() → 現在のプロジェクトのルート。join → 例: backend/src/schema.gql を作る

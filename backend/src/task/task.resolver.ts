@@ -15,7 +15,7 @@ import { Task } from './models/task.model';
 
 @Resolver()
 export class TaskResolver {
-  // DI(Dependency Injection)
+  // ✅ DI(Dependency Injection)
   // → コンストラクタに依存先のクラスを渡すことで、NestJSが自動的に、
   //   TaskServiceのインスタンスを作成しコンストラクタに渡してくれる
   constructor(private readonly taskService: TaskService) {}

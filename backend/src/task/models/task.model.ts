@@ -5,11 +5,14 @@
 // taskの型として使うのではなく、typescriptからgraph qlの型を
 // 生成するのに役にたつ
 
-import { Field, ObjectType } from "@nestjs/graphql";
+// @〜 などはデコレータ
+// → このクラスやメソッドにはこういう役割がありますよ」とNestJSに伝えるための目印。
+
+import { Field, Int, ObjectType } from "@nestjs/graphql";
 
 // TypeScriptのクラスを、GraphQLの型（スキーマ）として定義、公開するための設定
-@ObjectType()
-
+// → GraphQLに公開するための設計図(型定義)
+@ObjectType() // このクラスはGraph QLの型ですよ、とNestJSに教えるためのデコレータ
 export class Task{
   @Field(() => Int) // NestJSはIntかFloatなのかわからないために記述
   id: number;
