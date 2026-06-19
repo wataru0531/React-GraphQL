@@ -12,22 +12,15 @@ import { Task } from './models/task.model';
 // → TaskResolverで使用。
 @Injectable()
 export class TaskService {
-  tasks: Task[] = []; // Taskの配列
+  tasks: Task[] = []; // 追加したデータの配列
 
   // ✅ データを取得
   getTasks(): Task[] {
-    const task1 = new Task(); // Taskのインスタンス生成
-    task1.id = 1;
-    task1.name = 'task1';
-    task1.dueDate = '20260617';
-    task1.status = 'NOT_STARTED';
-    this.tasks.push(task1);
-
     return this.tasks;
   }
 
   // ✅ データを追加
-  createTask(name: string, dueDate, description?: string): Task {
+  createTask(name: string, dueDate: string, description?: string): Task {
     const newTask = new Task();
     newTask.id = this.tasks.length + 1;
     newTask.name = name;
@@ -36,6 +29,8 @@ export class TaskService {
     newTask.description = description;
 
     this.tasks.push(newTask);
+    
+    return newTask;
   }
 
 

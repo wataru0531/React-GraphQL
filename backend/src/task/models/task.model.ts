@@ -28,5 +28,5 @@ export class Task{
   status: 'NOT_STARTED' | 'IN_PROGRESS' | 'COMPLETED';
 
   @Field({ nullable: true }) // description省略でもエラーが出なくなる
-  description: string;
+  description?: string;
 }

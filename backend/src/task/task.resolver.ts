@@ -9,7 +9,7 @@
 // 結果を返す
 // これだけ
 
-import { Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { TaskService } from './task.service';
 import { Task } from './models/task.model';
 
@@ -24,5 +24,16 @@ export class TaskResolver {
   @Query(() => [Task], { nullable: 'items' }) // ここはGraphQLの型
   getTasks(): Task[] {
     return this.taskService.getTasks(); // 👉 サービスがTask一覧を返す
+  }
+
+  // ✅ 更新処理 
+  @Mutation(() => Task) // 戻り値はTask型
+  createTask(
+    @Args("name") name: string,  // ⭐️ @Args → GraphQLのクエリ文字列やミューテーションで渡された引数を受け取るためのデコレーター
+    @Args("dueDate") dueDate: string, 
+    @Args("description", { nullable: true }) description?: string, // nullable → 省略してもOK
+  ): Task {
+    return this.taskService.createTask(name, dueDate, description);
+    // → ⭐️ サービスのビジネスロジックを呼ぶ
   }
 }
