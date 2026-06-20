@@ -7,6 +7,7 @@
 
 import { Injectable } from '@nestjs/common';
 import { Task } from './models/task.model';
+import { CreateTaskInput } from './dto/createTask.input';
 
 // このクラスはDI(依存性注入)の対象だとNextJSに伝えるでコレーた
 // → TaskResolverで使用。
@@ -20,7 +21,10 @@ export class TaskService {
   }
 
   // ✅ データを追加
-  createTask(name: string, dueDate: string, description?: string): Task {
+  // createTask(name: string, dueDate: string, description?: string): Task {
+  createTask(createTaskInput: CreateTaskInput): Task {
+    const { name, dueDate, description } = createTaskInput;
+    
     const newTask = new Task();
     newTask.id = this.tasks.length + 1;
     newTask.name = name;

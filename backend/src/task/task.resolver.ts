@@ -12,6 +12,7 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { TaskService } from './task.service';
 import { Task } from './models/task.model';
+import { CreateTaskInput } from './dto/createTask.input';
 
 @Resolver()
 export class TaskResolver {
@@ -29,11 +30,16 @@ export class TaskResolver {
   // ✅ 更新処理 
   @Mutation(() => Task) // 戻り値はTask型
   createTask(
-    @Args("name") name: string,  // ⭐️ @Args → GraphQLのクエリ文字列やミューテーションで渡された引数を受け取るためのデコレーター
-    @Args("dueDate") dueDate: string, 
-    @Args("description", { nullable: true }) description?: string, // nullable → 省略してもOK
+    // @Args("name") name: string,  // ⭐️ @Args → GraphQLのクエリ文字列やミューテーションで渡された引数を受け取るためのデコレーター
+    // @Args("dueDate") dueDate: string, 
+    // @Args("description", { nullable: true }) description?: string, // nullable → 省略してもOK
+    
+    // 👉 GraphQLから送られてきた入力データを、CreateTaskInputという形で受け取る → 1行でOK
+    @Args("createTaskInput") createTaskInput: CreateTaskInput
   ): Task {
-    return this.taskService.createTask(name, dueDate, description);
+    // return this.taskService.createTask(name, dueDate, description);
     // → ⭐️ サービスのビジネスロジックを呼ぶ
+
+    return this.taskService.createTask(createTaskInput);
   }
 }
