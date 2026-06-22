@@ -1,0 +1,37 @@
+
+// ✅ Prismaの設定ファイル
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+// schema.prisma
+// ↓
+// npx prisma generate → generated/prisma が生成される
+//                      → prisma.user.findMany()やprisma.user.create()などの関数が自動生成
+// ↓
+// NestJSから利用
+
+// ✅ Prisma Client をどこに生成するか
+// Prisma Client → DBを操作するためのメソッドを持ったオブジェクトのこと
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+// ✅ どの種類のDBを使うかを設定。ここではpostgreSQL
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ✅ モデルを定義
+model Task {
+  // 注意 : TypeScriptの方ではなくPrismaの型を使う
+
+  // @id ... プライマリーキーとして認識させる
+  id Int @id @default(autoincrement())
+
+  // StringはpostgreSQLだとtext型に変換されてしまうので、Varchar型に変換されるようにする
+  // 255文字までのVarchar型
+  name String @db.VarChar(255)
+}
