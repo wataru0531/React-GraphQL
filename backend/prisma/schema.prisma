@@ -1,15 +1,29 @@
 
 // ✅ Prismaの設定ファイル
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+// → どんなテーブルを作るかを記述
 
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
+// ✅ Prisma Clientを生成
 // schema.prisma
 // ↓
-// npx prisma generate → generated/prisma が生成される
+// npx prisma generate → Prisma Clientを生成
+//                      → generated/prisma が生成される
 //                      → prisma.user.findMany()やprisma.user.create()などの関数が自動生成
 // ↓
 // NestJSから利用
+
+// ✅ マイグレーション
+// → prisma.schemaの記述内容と、現在に開発環境のDBとの差分を計算して、
+//   テーブル作成、SQL作成、Prisma Clientなどを再生成などを行う
+
+// initという名前でマイグレーションを行う
+// npx prisma migrate dev --name init 
+// ↓
+// schema.prismaからSQL生成
+// ↓
+// テーブル作成
+// 自動でprisma generateも実行されるので、新たにPrisma Clientも生成される
+
+
 
 // ✅ Prisma Client をどこに生成するか
 // Prisma Client → DBを操作するためのメソッドを持ったオブジェクトのこと
@@ -18,20 +32,34 @@ generator client {
   output   = "../generated/prisma"
 }
 
-// ✅ どの種類のDBを使うかを設定。ここではpostgreSQL
+// ✅ どの種類のDBに接続するかを設定。
+//    → 指定することで、prismaがpostgresql用のSQLを生成してくれる
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 // ✅ モデルを定義
 model Task {
   // 注意 : TypeScriptの方ではなくPrismaの型を使う
+  // → .prismaファイルであり、.tsファイルではない
 
   // @id ... プライマリーキーとして認識させる
   id Int @id @default(autoincrement())
 
   // StringはpostgreSQLだとtext型に変換されてしまうので、Varchar型に変換されるようにする
-  // 255文字までのVarchar型
+  // → PrismaはまずPrismaの型を書いて、次にDB固有の型を書く必要があるためStringを記述しなければならない。
+  // Varchar型 最大○文字まで」という制限付きの文字列型。
   name String @db.VarChar(255)
+  dueDate String @db.VarChar(10)
+
+  status Status @default(NOT_STARTED) // enum → 許可された値しか入れることができない
+  description String?
+  createdAt DateTime @default(now()) @db.Timestamp(0)
+  updatedAt DateTime @updatedAt @db.Timestamp(0)
+}
+
+enum Status {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
 }
