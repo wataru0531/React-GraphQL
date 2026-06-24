@@ -2,7 +2,7 @@
 // ✅ Prismaの設定ファイル
 // → どんなテーブルを作るかを記述
 
-// ✅ Prisma Clientを生成
+// ✅ Prisma Client
 // schema.prisma
 // ↓
 // npx prisma generate → Prisma Clientを生成

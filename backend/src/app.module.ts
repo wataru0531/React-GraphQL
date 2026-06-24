@@ -11,6 +11,7 @@ import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
 import { TaskModule } from './task/task.module';
+import { PrismaModule } from './prisma/prisma.module';
 
 // ✅ NestJSでGraphQLサーバーを起動するための設定
 // 👉 AppModuleに設定情報を付与している
@@ -31,6 +32,7 @@ import { TaskModule } from './task/task.module';
       // },
     }),
     TaskModule,
+    PrismaModule,
   ],
 })
 export class AppModule {}
